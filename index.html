@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Canavar Avı</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="foundation.min.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+    <div id="app">
+        <section v-if="!time_hide && game || game2 && !time_hide" class="time">
+            <h1>{{time}}</h1>
+        </section>
+        <section class="row" v-if="game || game2">
+            <div v-if="game" class="small-6 columns">
+                <h1 class="text-center">SƏN</h1>
+                <div class="healthbar">
+                    <div :style="{width:player_heal+'%', backgroundColor: player_bg_color}" class="healthbar text-center"  style="margin: 0; color: white;">
+                        {{player_heal}}%
+                    </div>
+                </div>
+            </div>
+            <div v-if="game" class="small-6 columns">
+                <h1 class="text-center">CANAVAR</h1>
+                <div class="healthbar" >
+                    <div :style="{width : monster_heal+'%', backgroundColor: monster_bg_color}" class="healthbar text-center" style="margin: 0; color: white;">
+                        {{monster_heal}}%
+                    </div>
+                </div>
+            </div>
+            <div v-if="game2" class="small-12 columns">
+                <h1 class="text-center">SƏN vs CANAVAR</h1>
+                <div class="healthbar">
+                    <div :style="{width:vs_heal+'%', backgroundColor: player_bg_color}" class="healthbar text-center"  style="margin: 0; color: white;">
+                        {{vs_heal}}%
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="row controls" v-if="!game_is_on && !game2">
+            <div class="small-12 columns">
+                <button id="start-game" @click="startGame">YENİ OYUN</button>
+            </div>
+            <div class="small-12 columns">
+                <button class="btn btn-warning" @click="sart_game2">YENİ OYUN(Qarşı - qarşıya)</button>
+            </div>
+        </section>
+        <section class="row controls" v-if="game_is_on && !game">
+            <div class="small-12 columns">
+                <button  @click="new_game(); weak_wolf();">ZƏİF CANAVAR</button>
+                <button  @click="new_game(); big_wolf();">GÜCLÜ CANAVAR</button>
+
+            </div>
+        </section>
+        <section class="row controls" v-if="game2">
+            <div class="small-12 columns">
+                <button id="attack"  @click="vs_attack">SALDIRI</button>
+                <button id="give-up" @click="give_up">PES ET!</button>
+            </div>
+        </section>
+        <section class="row controls" v-if="game">
+            <div class="small-12 columns">
+                <button id="attack"  @click="attack(); vs_attack()">SALDIRI</button>
+                <button id="special-attack" @click="special_attack">ÖZƏL SALDIRI</button>
+                <button id="heal" @click="heal_up">İLK YARDIM</button>
+                <button id="give-up" @click="give_up">PES ET!</button>
+            </div>
+        </section>
+        <section v-if="game && logs.length" class="row log">
+            <div class="small-12 columns">
+                <ul>
+                    <li v-for="item in logs" :class="{ 'player-turn' : item.turn == 'p','monster-turn' : item.turn == 'm'}">
+                        {{item.logs}}
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+
+</html>
